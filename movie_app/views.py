@@ -52,3 +52,7 @@ def review_detail(request, id):
         queryset = get_object_or_404(Review, id=id)
         serializer = ReviewSerializer(queryset)
         return Response(serializer.data, status=200)
+
+
+@api_view(['GET'])
+def
