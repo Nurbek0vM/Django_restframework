@@ -31,7 +31,6 @@ class MovieSerializer(serializers.ModelSerializer):
         return obj.movies.count()
 
 
-<<<<<<< HEAD
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
@@ -46,8 +45,7 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = '__all__'
 
-=======
->>>>>>> github/master
+
     def get_average_rating(self, obj):
         total_stars = sum(review.stars for review in obj.reviews.all())
         num_reviews = obj.reviews.count()
