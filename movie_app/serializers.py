@@ -3,6 +3,12 @@ from rest_framework import serializers
 from movie_app.models import Director, Movie, Review
 
 
+def validate_name_min_length(value, min_length):
+    if len(value) < min_length:
+        raise serializers.ValidationError(f'Минимальная длина для поля равна {min_length}')
+    return value
+
+
 class DirectorSerializer(serializers.ModelSerializer):
     movies_count = serializers.SerializerMethodField()
 
@@ -13,11 +19,17 @@ class DirectorSerializer(serializers.ModelSerializer):
     def get_movies_count(self, obj):
         return obj.movies.count()
 
+    def validate_name(self, value):
+        validate_name_min_length(value, 4)
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
+    def validate_text(self, value):
+        validate_name_min_length(value, 4)
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -31,11 +43,6 @@ class MovieSerializer(serializers.ModelSerializer):
         return obj.movies.count()
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = '__all__'
-
 
 class MovieSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
@@ -44,7 +51,6 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
-
 
     def get_average_rating(self, obj):
         total_stars = sum(review.stars for review in obj.reviews.all())
@@ -55,3 +61,5 @@ class MovieSerializer(serializers.ModelSerializer):
         else:
             return 0.0
 
+    def validate_title(self, value):
+        validate_name_min_length(value, 2)
