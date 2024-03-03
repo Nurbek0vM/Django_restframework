@@ -35,7 +35,7 @@ def director_detail(request, id):
         return Response(status=204)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def movie_list(request):
     if request.method == 'GET':
         queryset = Movie.objects.all()
@@ -48,7 +48,7 @@ def movie_list(request):
         return Response(serializer.data, status=200)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def movie_detail(request, id):
     queryset = get_object_or_404(Movie, id=id)
     if request.method == 'GET':
@@ -65,7 +65,7 @@ def movie_detail(request, id):
         return Response(status=204)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def review_list(request):
     if request.method == 'GET':
         queryset = Review.objects.all()
@@ -78,7 +78,7 @@ def review_list(request):
         return Response(serializer.data, status=200)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def review_detail(request, id):
     queryset = get_object_or_404(Review, id=id)
     if request.method == 'GET':
